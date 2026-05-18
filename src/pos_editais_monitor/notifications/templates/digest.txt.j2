@@ -1,0 +1,15 @@
+pos-editais-monitor — digest {{ data }}
+============================================
+
+{{ matches|length }} edital(is) encontrado(s) no seu perfil ({{ profile_name }}).
+
+{% for m in matches %}
+- {{ m.titulo }}
+  {{ m.ies_nome }} | {{ m.modalidade_label }}{% if m.area_label %} | {{ m.area_label }}{% endif %}
+  {% if m.prazo %}Inscrições até: {{ m.prazo }}{% endif %}
+  Score: {{ '%.2f'|format(m.score) }}
+  {{ m.url_origem }}
+{% endfor %}
+
+--
+pos-editais-monitor

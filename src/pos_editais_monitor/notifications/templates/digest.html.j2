@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>pos-editais-monitor — digest {{ data }}</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 720px; margin: 24px auto; color: #1a1a1a; }
+    h1 { font-size: 20px; border-bottom: 2px solid #333; padding-bottom: 6px; }
+    h2 { font-size: 16px; margin-top: 32px; color: #5c0808; }
+    .edital { padding: 12px 0; border-bottom: 1px solid #eee; }
+    .edital .titulo { font-weight: 600; font-size: 15px; }
+    .edital .meta { color: #666; font-size: 13px; margin-top: 4px; }
+    .score { display: inline-block; padding: 2px 6px; background: #5c0808; color: #fff; font-size: 11px; border-radius: 3px; }
+    .footer { margin-top: 40px; font-size: 12px; color: #999; }
+    a { color: #5c0808; }
+  </style>
+</head>
+<body>
+  <h1>Editais relevantes — {{ data }}</h1>
+  <p>{{ matches|length }} edital{% if matches|length != 1 %}is{% endif %} encontrado{% if matches|length != 1 %}s{% endif %} no seu perfil ({{ profile_name }}).</p>
+
+  {% set niveis = matches|groupby('nivel_label') %}
+  {% for nivel, group in niveis %}
+    <h2>{{ nivel }} ({{ group|list|length }})</h2>
+    {% for m in group %}
+      <div class="edital">
+        <div class="titulo">{{ m.titulo }}</div>
+        <div class="meta">
+          <strong>{{ m.ies_nome }}</strong> &middot; {{ m.modalidade_label }}
+          {% if m.area_label %} &middot; {{ m.area_label }}{% endif %}
+          {% if m.prazo %} &middot; Inscrições até <strong>{{ m.prazo }}</strong>{% endif %}
+          &middot; <span class="score">score {{ '%.2f'|format(m.score) }}</span>
+        </div>
+        <div class="meta">
+          <a href="{{ m.url_origem }}">Ver edital</a>
+          {% if m.url_pdf %} &middot; <a href="{{ m.url_pdf }}">PDF</a>{% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  {% endfor %}
+
+  <p class="footer">
+    Você está recebendo este email do <em>pos-editais-monitor</em>.
+    Para ajustar critérios, edite seu perfil via API/CLI.
+  </p>
+</body>
+</html>

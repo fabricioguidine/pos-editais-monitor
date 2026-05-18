@@ -1,0 +1,82 @@
+name: pos-editais-monitor
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pem
+      POSTGRES_PASSWORD: pem
+      POSTGRES_DB: pem
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "pem"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  smtp4dev:
+    # SMTP mock para dev. Web UI em http://localhost:5000
+    image: rnwood/smtp4dev:v3
+    restart: unless-stopped
+    ports:
+      - "5000:80"
+      - "2525:25"
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    restart: unless-stopped
+    environment:
+      PEM_DATABASE_URL: postgresql+asyncpg://pem:pem@postgres:5432/pem
+      PEM_REDIS_URL: redis://redis:6379/0
+      PEM_SMTP_HOST: smtp4dev
+      PEM_SMTP_PORT: "25"
+      PEM_LOG_FORMAT: json
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    command: ["uvicorn", "pos_editais_monitor.api.app:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  worker:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    restart: unless-stopped
+    environment:
+      PEM_DATABASE_URL: postgresql+asyncpg://pem:pem@postgres:5432/pem
+      PEM_REDIS_URL: redis://redis:6379/0
+      PEM_SMTP_HOST: smtp4dev
+      PEM_SMTP_PORT: "25"
+      PEM_LOG_FORMAT: json
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "9090:9090"
+    command: ["pem", "worker"]
+
+volumes:
+  pgdata:

@@ -1,0 +1,76 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtualenv
+.venv/
+venv/
+ENV/
+
+# Env files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+
+# Mypy / Ruff
+.mypy_cache/
+.ruff_cache/
+.dmypy.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Playwright
+playwright-report/
+test-results/
+.playwright/
+
+# Logs and runtime
+logs/
+*.log
+*.pid
+
+# Local data (HTML/PDF snapshots, dev DB dumps)
+data/
+storage/local/
+snapshots/
+
+# Docker volumes
+.docker-data/
+
+# Alembic auto-generated (we keep the env, not the cache)
+**/__pycache__/
