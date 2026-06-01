@@ -65,9 +65,17 @@ logs/
 *.pid
 
 # Local data (HTML/PDF snapshots, dev DB dumps)
-data/
-storage/local/
+data/*
+!data/emec_seed.json
+storage/
 snapshots/
+.pytest_cache/
+.coverage*
+htmlcov/
+
+# Virtualenv (any name)
+.venv*/
+env/
 
 # Docker volumes
 .docker-data/

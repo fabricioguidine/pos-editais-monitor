@@ -188,6 +188,29 @@ Typer-based:
 
 Cada passo emite log estruturado e métrica.
 
+## Testes e portabilidade
+
+A pirâmide de testes é organizada por marker para isolar I/O externo:
+
+- **`tests/unit`** — funções puras (parsing de campos, datas, normalização, dedup,
+  classificação, whitelist e o `MatchEngine`). Sem rede, SMTP, Docker ou DB.
+- **`tests/e2e`** — suite **end-to-end hermética**. Alimenta documentos sintéticos
+  (HTML em `tests/fixtures/html/` e um PDF mínimo válido em `tests/fixtures/pdf/`)
+  nos **parsers reais** (`WordPressParser`, `GenericHtmlParser`, `PdfParser`),
+  aplica o mesmo mapeamento `ParsedEdital → Edital` do orchestrator, roda
+  classificação + matching contra um perfil sintético (assertando que **apenas
+  verdadeiros positivos** passam) e verifica a **composição do digest** via um
+  canal fake que captura o `NotificationPayload` — **nenhum envio real**. Tudo
+  determinístico e OS-agnóstico (`tmp_path`, fixtures relativas ao pacote).
+- **`tests/integration`** (marker `integration`) — exige Postgres + Redis.
+- **`tests/contracts`** (marker `contract`) — bate em upstreams reais; nightly.
+
+**Cross-platform.** O domínio e os parsers não dependem de SO: caminhos via
+`pathlib`, `encoding="utf-8"` em toda leitura de arquivo, configuração só por
+variáveis de ambiente (`PEM_*`), nenhum diretório absoluto embutido, e o object
+store normaliza o path lógico para `/`. A CI valida o caminho rápido
+(`tests/unit` + `tests/e2e`) numa matriz **{ubuntu, macos, windows} × {3.11, 3.12, 3.13}**.
+
 ## Decisões registradas (ADRs)
 
 - [ADR-0001 — Clean architecture com domínio puro](adr/0001-clean-architecture.md)

@@ -171,11 +171,15 @@ Detalhes em [`docs/SCRAPING_STRATEGY.md`](docs/SCRAPING_STRATEGY.md) e [ADR-0005
 
 ## Requisitos
 
-- Python 3.11+
-- Docker + Docker Compose (o autor usa Windows 11 + Docker Desktop)
+- Python 3.11, 3.12 ou 3.13
+- Docker + Docker Compose (apenas para Postgres/Redis e build da imagem; **nao** e necessario para rodar os testes)
 - (opcional) [uv](https://github.com/astral-sh/uv) para gerenciar o venv mais rapido
 
+O projeto e **cross-platform**: o codigo, a suite de testes e a CI rodam em **Linux, macOS e Windows** com Python 3.11/3.12/3.13. Veja a [nota de portabilidade](#nota-de-portabilidade).
+
 ## Rodando localmente
+
+### Linux / macOS
 
 ```bash
 git clone https://github.com/fabricioguidine/pos-editais-monitor
@@ -183,7 +187,33 @@ cd pos-editais-monitor
 cp .env.example .env
 # edite .env com ANTHROPIC_API_KEY, senha SMTP (App Password do Gmail), etc.
 
+# com Makefile (atalho)
 make dev              # cria venv, instala deps, playwright e pre-commit
+
+# ou sem Makefile, com venv puro
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+```
+
+### Windows (PowerShell)
+
+`make` nao e necessario no Windows — use o venv diretamente:
+
+```powershell
+git clone https://github.com/fabricioguidine/pos-editais-monitor
+Set-Location pos-editais-monitor
+Copy-Item .env.example .env
+# edite .env com ANTHROPIC_API_KEY, senha SMTP, etc.
+
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -e ".[dev]"
+```
+
+### Subindo servicos e a app (qualquer SO)
+
+```bash
 make compose-up       # sobe Postgres + Redis (docker/docker-compose.yml)
 make migrate          # aplica migrations (alembic upgrade head)
 make run-api          # API em http://localhost:8000  (swagger em /docs)
@@ -208,11 +238,39 @@ uv run pem version
 
 ### Testes
 
+A suite e dividida por marker para que **rede, SMTP, Docker e banco nao sejam necessarios** no caminho rapido:
+
+- **`tests/unit`** — parsing de campos, datas, normalizacao, dedup, classificacao, whitelist e matching, todos puros e deterministicos.
+- **`tests/e2e`** — suite **end-to-end hermetica**: alimenta documentos sinteticos (HTML e um PDF de fixture) nos **parsers reais**, segue o mesmo mapeamento `ParsedEdital -> Edital` do orchestrator, roda **classificacao + matching** contra um perfil sintetico (so verdadeiros positivos passam) e verifica a **composicao do digest de email** com um canal fake que captura o payload — **nenhum envio real, sem rede, sem SMTP, sem DB**.
+- **`tests/integration`** (marker `integration`) — exige Postgres + Redis up.
+- **`tests/contracts`** (marker `contract`) — bate em fontes reais; roda no workflow nightly, nunca em PR.
+
+Caminho rapido, identico em Linux/macOS/Windows:
+
 ```bash
-make test-unit              # rapido, sem rede, sem DB
+# sem make, funciona em qualquer SO (Windows: .venv\Scripts\activate primeiro)
+pytest tests/unit tests/e2e -m "not integration and not contract"
+```
+
+```bash
+make test-unit              # so unit (atalho Unix)
 make test-integration       # exige Postgres e Redis up (docker compose)
 make test-contracts         # bate em fontes reais (CI roda nightly, nao em PR)
 ```
+
+A CI roda o caminho rapido (`tests/unit` + `tests/e2e`) em uma **matriz `os` x `python-version`** = {ubuntu, macos, windows} x {3.11, 3.12, 3.13}.
+
+## Nota de portabilidade
+
+O codigo e escrito para ser cross-platform por construcao:
+
+- caminhos sempre via `pathlib.Path` (nunca separadores hardcoded); o object store normaliza para `/` no path logico armazenado;
+- `open()`/leitura de arquivos sempre com `encoding="utf-8"`;
+- configuracao e segredos exclusivamente por variaveis de ambiente (prefixo `PEM_`), nunca hardcoded;
+- nenhum diretorio absoluto (`/tmp`, `C:\...`) embutido; testes usam `tmp_path` e fixtures relativas ao pacote;
+- `.gitattributes` forca `eol=lf` para o tracking (com `crlf` para `.ps1`/`.cmd`/`.bat`), evitando ruido de fim-de-linha entre SOs.
+
+Os scripts auxiliares de automacao em `scripts/*.ps1`/`*.cmd` sao especificos de Windows e opcionais; o fluxo principal (venv + pytest + Docker compose) e identico nos tres sistemas.
 
 ## Configuracao
 
@@ -256,6 +314,13 @@ src/pos_editais_monitor/
 ├── api/               # FastAPI app + routers + schemas + dependencies
 ├── core/              # config, logging, observabilidade (OTEL/metrics)
 └── cli/               # CLI typer: pem scrape | worker | refresh-emec | dispatch-digest | seed
+
+tests/
+├── unit/              # puros, deterministicos, sem I/O
+├── e2e/               # end-to-end hermetico (parse -> match -> compose), sem rede/SMTP/DB
+├── integration/       # marker `integration` (Postgres + Redis)
+├── contracts/         # marker `contract` (fontes reais, nightly)
+└── fixtures/          # documentos sinteticos: html/ e pdf/
 ```
 
 ## Roadmap

@@ -178,6 +178,10 @@ markers = [
 filterwarnings = [
   "error",
   "ignore::DeprecationWarning:playwright.*",
+  # opentelemetry usa a interface dict de importlib.metadata entry-points, que
+  # emite DeprecationWarning no Python 3.11 (corrigido em 3.12+). Ruido de
+  # terceiros, nao do nosso codigo.
+  "ignore:SelectableGroups dict interface is deprecated:DeprecationWarning",
 ]
 
 [tool.coverage.run]

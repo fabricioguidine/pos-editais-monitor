@@ -18,5 +18,6 @@ logs
 .idea
 .vscode
 docker
-*.md
 docs
+CHANGELOG.md
+CONTRIBUTING.md
