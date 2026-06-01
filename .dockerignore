@@ -18,7 +18,6 @@ logs
 .idea
 .vscode
 docker
-*.md
-# README.md e necessario no build: pyproject define readme = "README.md".
-!README.md
 docs
+CHANGELOG.md
+CONTRIBUTING.md
