@@ -19,4 +19,6 @@ logs
 .vscode
 docker
 *.md
+# README.md e necessario no build: pyproject define readme = "README.md".
+!README.md
 docs

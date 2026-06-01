@@ -19,7 +19,7 @@ COPY pyproject.toml README.md ./
 COPY src ./src
 
 RUN pip install --upgrade pip wheel \
-    && pip install --prefix=/install ".[]"
+    && pip install --prefix=/install "."
 
 # ---------------------------------------------------------------------------
 # Stage 2: runtime — playwright base + libs
