@@ -2,11 +2,7 @@
 
 <img src=".github/assets/banner.svg" alt="pos-editais-monitor" width="100%">
 
-[![CI](https://github.com/fabricioguidine/pos-editais-monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/fabricioguidine/pos-editais-monitor/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg?logo=docker&logoColor=white)](https://www.docker.com)
+[![CI](https://github.com/fabricioguidine/pos-editais-monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/fabricioguidine/pos-editais-monitor/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff) [![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg?logo=docker&logoColor=white)](https://www.docker.com)
 
 </div>
 
