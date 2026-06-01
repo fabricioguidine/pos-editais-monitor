@@ -1,0 +1,18 @@
+{
+  "fonte": "Cadastro e-MEC (subset seed para MVP)",
+  "atualizado_em": "2026-05-01",
+  "ies": [
+    {"codigo_emec": "0521", "sigla": "UFRGS", "nome": "Universidade Federal do Rio Grande do Sul", "categoria_administrativa": "Publica Federal", "organizacao_academica": "Universidade", "uf": "RS", "municipio": "Porto Alegre", "ativa": true, "publica": true},
+    {"codigo_emec": "0578", "sigla": "USP", "nome": "Universidade de Sao Paulo", "categoria_administrativa": "Publica Estadual", "organizacao_academica": "Universidade", "uf": "SP", "municipio": "Sao Paulo", "ativa": true, "publica": true},
+    {"codigo_emec": "0577", "sigla": "UNICAMP", "nome": "Universidade Estadual de Campinas", "categoria_administrativa": "Publica Estadual", "organizacao_academica": "Universidade", "uf": "SP", "municipio": "Campinas", "ativa": true, "publica": true},
+    {"codigo_emec": "0586", "sigla": "UFMG", "nome": "Universidade Federal de Minas Gerais", "categoria_administrativa": "Publica Federal", "organizacao_academica": "Universidade", "uf": "MG", "municipio": "Belo Horizonte", "ativa": true, "publica": true},
+    {"codigo_emec": "0594", "sigla": "UFRJ", "nome": "Universidade Federal do Rio de Janeiro", "categoria_administrativa": "Publica Federal", "organizacao_academica": "Universidade", "uf": "RJ", "municipio": "Rio de Janeiro", "ativa": true, "publica": true},
+    {"codigo_emec": "0633", "sigla": "UFSC", "nome": "Universidade Federal de Santa Catarina", "categoria_administrativa": "Publica Federal", "organizacao_academica": "Universidade", "uf": "SC", "municipio": "Florianopolis", "ativa": true, "publica": true},
+    {"codigo_emec": "0566", "sigla": "UnB", "nome": "Universidade de Brasilia", "categoria_administrativa": "Publica Federal", "organizacao_academica": "Universidade", "uf": "DF", "municipio": "Brasilia", "ativa": true, "publica": true},
+    {"codigo_emec": "0696", "sigla": "UFPE", "nome": "Universidade Federal de Pernambuco", "categoria_administrativa": "Publica Federal", "organizacao_academica": "Universidade", "uf": "PE", "municipio": "Recife", "ativa": true, "publica": true},
+    {"codigo_emec": "0581", "sigla": "UNESP", "nome": "Universidade Estadual Paulista Julio de Mesquita Filho", "categoria_administrativa": "Publica Estadual", "organizacao_academica": "Universidade", "uf": "SP", "municipio": "Sao Paulo", "ativa": true, "publica": true},
+    {"codigo_emec": "1565", "sigla": "IFRS", "nome": "Instituto Federal de Educacao, Ciencia e Tecnologia do Rio Grande do Sul", "categoria_administrativa": "Publica Federal", "organizacao_academica": "Instituto Federal", "uf": "RS", "municipio": "Bento Goncalves", "ativa": true, "publica": true},
+    {"codigo_emec": "1771", "sigla": "IFSP", "nome": "Instituto Federal de Educacao, Ciencia e Tecnologia de Sao Paulo", "categoria_administrativa": "Publica Federal", "organizacao_academica": "Instituto Federal", "uf": "SP", "municipio": "Sao Paulo", "ativa": true, "publica": true},
+    {"codigo_emec": "0590", "sigla": "UFBA", "nome": "Universidade Federal da Bahia", "categoria_administrativa": "Publica Federal", "organizacao_academica": "Universidade", "uf": "BA", "municipio": "Salvador", "ativa": true, "publica": true}
+  ]
+}
